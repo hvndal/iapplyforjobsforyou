@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, ShieldCheck, Terminal, Layers, Cpu } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "How It Works — I Apply For Jobs For You",
+  description:
+    "See how I Apply For Jobs For You automates job applications across Greenhouse, Lever, and Ashby using the Truth Database and zero-hallucination AI reasoning.",
+  alternates: {
+    canonical: "/how-it-works",
+  },
+};
 
 export default function HowItWorksPage() {
   return (

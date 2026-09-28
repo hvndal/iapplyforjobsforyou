@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, Coffee, ShieldCheck, Zap, ArrowRight } from "lucide-react";
 import { BmcLogo } from "@/components/BuyMeACoffee";
+
+export const metadata: Metadata = {
+  title: "Pricing | Free 30 Applications & Pay-What-You-Can",
+  description:
+    "First 30 job applications are completely free. Ongoing packs available through simple Buy Me a Coffee support. Transparent pricing, no recurring lock-in.",
+  alternates: {
+    canonical: "/pricing",
+  },
+};
 
 export default function PricingPage() {
   return (
