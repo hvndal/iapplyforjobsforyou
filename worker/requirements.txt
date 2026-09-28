@@ -1,0 +1,12 @@
+# Python Worker & Core Requirements
+google-genai>=2.3.0
+playwright>=1.49.0
+pydantic>=2.10.0
+fastapi>=0.115.0
+uvicorn>=0.32.0
+python-multipart>=0.0.12
+pypdf>=5.1.0
+python-docx>=1.1.2
+supabase>=2.10.0
+python-dotenv>=1.0.1
+rich>=13.9.0
