@@ -9,86 +9,25 @@ import {
   ShieldCheck,
   Terminal,
   Zap,
-  RefreshCw,
   Copy,
-  ExternalLink,
-  ChevronRight,
-  Sparkles,
   Mail,
   Loader2,
   Coffee
 } from "lucide-react";
-import { BmcLogo, BuyMeACoffeeButton } from "@/components/BuyMeACoffee";
-
-interface MockSim {
-  company: string;
-  role: string;
-  ats: string;
-  salary: string;
-  location: string;
-  fieldsFilled: number;
-  answerPreview: string;
-  timeTaken: string;
-}
-
-const simExamples: MockSim[] = [
-  {
-    company: "Linear",
-    role: "Senior Frontend Engineer",
-    ats: "Ashby",
-    salary: "$165,000 - $190,000",
-    location: "Remote (Global)",
-    fieldsFilled: 14,
-    answerPreview: "Answered 'Why Linear?': Grounded in user's 4 years of TypeScript & high-performance React UI builds.",
-    timeTaken: "1.6s",
-  },
-  {
-    company: "Supabase",
-    role: "Full Stack Developer",
-    ats: "Lever",
-    salary: "$150,000 - $180,000",
-    location: "Remote (Americas/EU)",
-    fieldsFilled: 19,
-    answerPreview: "Answered 'Postgres experience?': Factual history extracted: 3 years building relational database schemas.",
-    timeTaken: "2.1s",
-  },
-  {
-    company: "Vercel",
-    role: "Developer Experience Engineer",
-    ats: "Greenhouse",
-    salary: "$160,000 - $195,000",
-    location: "Remote (US/Canada)",
-    fieldsFilled: 22,
-    answerPreview: "Answered 'Next.js projects shipped': Pulled 3 live production apps directly from verified resume.",
-    timeTaken: "1.9s",
-  },
-  {
-    company: "Stripe",
-    role: "Frontend Engineer - Billing",
-    ats: "Greenhouse",
-    salary: "$170,000 - $210,000",
-    location: "Remote / Hybrid",
-    fieldsFilled: 26,
-    answerPreview: "Checked work authorization: Verified US/Canada authorized. Zero hallucinated clearance.",
-    timeTaken: "2.4s",
-  },
-];
+import { MotionHero } from "@/components/MotionHero";
+import { AnimatedMarquee } from "@/components/AnimatedMarquee";
+import { PhotoContrastSection } from "@/components/PhotoContrastSection";
+import { BmcLogo } from "@/components/BuyMeACoffee";
 
 export default function Home() {
-  const [simIndex, setSimIndex] = useState(0);
   const [copied, setCopied] = useState(false);
-  const currentSim = simExamples[simIndex];
 
-  // Quick inquiry state
+  // Quick inquiry form state -> sales@mander.tech
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactMsg, setContactMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
-
-  const nextSim = () => {
-    setSimIndex((prev) => (prev + 1) % simExamples.length);
-  };
 
   const copyQuote = () => {
     navigator.clipboard.writeText(
@@ -128,168 +67,18 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center">
-      {/* 1. HERO SECTION */}
-      <section className="w-full max-w-5xl mx-auto px-6 pt-16 pb-20">
-        <div className="flex flex-col items-center text-center space-y-6">
-          {/* Top Badge */}
-          <div className="inline-flex items-center gap-2 border-2 border-black bg-white px-3 py-1 font-mono text-[11px] font-extrabold uppercase tracking-widest brutal-shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#E2F952]" />
-            <span>INTERNET UTILITY</span>
-            <span className="text-stone-300">•</span>
-            <span>NO CAREER-COPILOT BULLSHIT</span>
-          </div>
+      {/* 1. MOTION HERO & INTERACTIVE SIMULATOR */}
+      <MotionHero />
 
-          {/* Main Giant Headline */}
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-black font-mono leading-[0.95] max-w-4xl uppercase">
-            I APPLY FOR JOBS FOR YOU.
-          </h1>
+      {/* 2. CONTINUOUS ANIMATED MARQUEE */}
+      <AnimatedMarquee />
 
-          {/* Subheading */}
-          <div className="font-mono text-xl sm:text-2xl text-stone-700 max-w-2xl leading-snug space-y-1 pt-2">
-            <p>You find the job.</p>
-            <p>
-              <span className="bg-[#E2F952] px-2 py-0.5 border border-black font-extrabold text-black">
-                I apply to it.
-              </span>
-            </p>
-          </div>
+      {/* 3. PHOTO CONTRAST SECTION (STRESSED VS CHILLING) */}
+      <PhotoContrastSection />
 
-          <p className="text-stone-600 text-sm sm:text-base max-w-xl font-mono pt-2">
-            Give me your resume. Tell me what you want.
-            <br />
-            I&apos;ll handle the annoying shit so you can go live your life.
-          </p>
-
-          {/* Action CTAs & Upfront BMC Embed */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 w-full sm:w-auto">
-            <Link
-              href="/resume"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#E2F952] text-black px-8 py-4 font-mono text-sm uppercase font-extrabold tracking-wider border-2 border-black brutal-shadow hover:bg-black hover:text-[#E2F952] transition-all"
-            >
-              Give me your resume →
-            </Link>
-
-            <a
-              href="https://buymeacoffee.com/hermanify"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#FFDD00] text-black px-7 py-4 font-mono text-sm uppercase font-black tracking-wider border-2 border-black brutal-shadow hover:bg-black hover:text-[#FFDD00] transition-all"
-            >
-              <BmcLogo className="w-4 h-5 text-black" />
-              <span>Buy me a coffee ☕</span>
-            </a>
-          </div>
-
-          {/* Mini Trust Bar */}
-          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 pt-4 font-mono text-xs text-stone-500">
-            <span className="flex items-center gap-1.5 font-bold text-black">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" /> 30 Applications Free
-            </span>
-            <span className="flex items-center gap-1.5 font-bold text-black">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" /> 0% Hallucination Policy
-            </span>
-            <span className="flex items-center gap-1.5 font-bold text-black">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" /> Greenhouse, Lever & Ashby
-            </span>
-          </div>
-        </div>
-
-        {/* 2. INTERACTIVE LIVE APPLICATION SIMULATOR WIDGET */}
-        <div className="mt-14 border-2 border-black bg-white brutal-shadow-lg overflow-hidden font-mono">
-          {/* Terminal Window Header */}
-          <div className="bg-black text-white px-4 py-2.5 flex items-center justify-between border-b-2 border-black text-xs">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500 border border-black" />
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-black" />
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 border border-black" />
-              </div>
-              <span className="font-bold tracking-wider uppercase ml-2 text-stone-300">
-                LIVE DEMO // REAL APPLICATION FLOW
-              </span>
-            </div>
-
-            <button
-              onClick={nextSim}
-              className="flex items-center gap-1.5 bg-stone-800 hover:bg-[#E2F952] hover:text-black text-white px-2.5 py-1 text-[11px] font-bold uppercase transition-colors"
-            >
-              <RefreshCw className="w-3 h-3" />
-              Next Target Company
-            </button>
-          </div>
-
-          {/* Simulator Content */}
-          <div className="p-6 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-dashed border-stone-200 pb-4">
-              <div>
-                <div className="text-[11px] uppercase font-bold text-stone-400">
-                  TARGET OPPORTUNITY #{simIndex + 1}
-                </div>
-                <div className="text-xl sm:text-2xl font-black text-black">
-                  {currentSim.role}
-                </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-stone-600 mt-1">
-                  <span>{currentSim.company}</span>
-                  <span>•</span>
-                  <span>{currentSim.ats} Board</span>
-                  <span>•</span>
-                  <span className="text-emerald-700">{currentSim.salary}</span>
-                </div>
-              </div>
-
-              <div className="sm:text-right">
-                <span className="inline-block bg-emerald-100 text-emerald-950 border border-emerald-400 px-2.5 py-1 text-xs font-extrabold uppercase">
-                  ✓ SUBMITTED IN {currentSim.timeTaken}
-                </span>
-                <div className="text-[11px] text-stone-400 mt-1">No human intervention required</div>
-              </div>
-            </div>
-
-            {/* Simulated Steps */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              <div className="border border-black p-3 bg-stone-50 space-y-1">
-                <span className="text-[10px] text-stone-500 font-bold uppercase block">
-                  STEP 01: EXTRACT FORM
-                </span>
-                <div className="font-bold text-black">
-                  {currentSim.fieldsFilled} Form Fields Parsed
-                </div>
-                <div className="text-stone-600 text-[11px]">
-                  Greenhouse / Ashby schema mapped deterministically.
-                </div>
-              </div>
-
-              <div className="border border-black p-3 bg-stone-50 space-y-1">
-                <span className="text-[10px] text-stone-500 font-bold uppercase block">
-                  STEP 02: GROUNDED ANSWERS
-                </span>
-                <div className="font-bold text-black">
-                  Strictly Verified Facts
-                </div>
-                <div className="text-stone-600 text-[11px]">
-                  {currentSim.answerPreview}
-                </div>
-              </div>
-
-              <div className="border border-black p-3 bg-stone-50 space-y-1">
-                <span className="text-[10px] text-stone-500 font-bold uppercase block">
-                  STEP 03: SUBMISSION
-                </span>
-                <div className="font-bold text-emerald-800">
-                  ✓ Confirmed & Logged
-                </div>
-                <div className="text-stone-600 text-[11px]">
-                  Uploaded resume PDF, captured receipt, and synced to dashboard.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. THE PHILOSOPHY / FUCK LINKEDIN SECTION */}
-      <section className="w-full border-y-2 border-black bg-black text-white py-20 px-6">
-        <div className="max-w-5xl mx-auto space-y-10 font-mono">
+      {/* 4. THE PHILOSOPHY / FUCK LINKEDIN SECTION */}
+      <section className="w-full border-y-2 border-black bg-black text-white py-20 px-6 font-mono">
+        <div className="max-w-5xl mx-auto space-y-10">
           <div className="space-y-4">
             <div className="inline-block bg-[#E2F952] text-black px-3 py-1 text-xs uppercase font-extrabold tracking-widest">
               THE UNAPOLOGETIC MOTTO
@@ -365,7 +154,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. DIVISION OF LABOR (YOU / ME / YOU) */}
+      {/* 5. DIVISION OF LABOR (YOU / ME / YOU) */}
       <section className="w-full max-w-5xl mx-auto px-6 py-20 font-mono">
         <div className="text-center space-y-2 mb-12">
           <div className="text-xs uppercase font-extrabold tracking-widest text-stone-500">
@@ -451,7 +240,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. ZERO HALLUCINATION POLICY */}
+      {/* 6. ZERO HALLUCINATION POLICY */}
       <section className="w-full bg-white border-y-2 border-black py-16 px-6 font-mono">
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="flex items-center gap-2 text-xs uppercase font-extrabold text-stone-500">
@@ -497,10 +286,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. UPFRONT BUY ME A COFFEE & DIRECT SALES INQUIRY */}
+      {/* 7. UPFRONT BUY ME A COFFEE & DIRECT SALES INQUIRY (sales@mander.tech) */}
       <section className="w-full max-w-5xl mx-auto px-6 py-16 font-mono space-y-10">
         {/* Upfront Official BMC Card */}
-        <div className="border-2 border-black bg-[#FFDD00]/20 p-8 brutal-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="border-2 border-black bg-[#FFDD00]/25 p-8 brutal-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <div className="inline-flex items-center gap-2 bg-black text-[#FFDD00] px-3 py-1 text-xs font-black uppercase">
               <BmcLogo className="w-3.5 h-3.5" />
@@ -606,7 +395,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. SHAREABLE / VIRAL QUOTE */}
+      {/* 8. SHAREABLE / VIRAL QUOTE */}
       <section className="w-full max-w-4xl mx-auto px-6 py-16 text-center font-mono space-y-6">
         <h2 className="text-3xl sm:text-4xl font-black uppercase text-black">
           Ready to stop filling out job forms?
