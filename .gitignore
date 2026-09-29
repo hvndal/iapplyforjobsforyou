@@ -39,3 +39,9 @@ venv/
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Candidate Submissions & Resumes (Privacy)
+data/
+frontend/data/
+*.pdf
+

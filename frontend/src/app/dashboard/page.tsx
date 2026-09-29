@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Check,
@@ -107,6 +107,95 @@ export default function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [customAnswer, setCustomAnswer] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [candidate, setCandidate] = useState<{
+    name: string;
+    email: string;
+    desiredRole: string;
+    minSalary: string;
+    remotePreference: string;
+    applicationsRemaining?: number;
+  } | null>(null);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("iapply_current_candidate");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setCandidate(parsed);
+
+        // Customize applications dynamically to match candidate's target role
+        if (parsed.desiredRole) {
+          const role = parsed.desiredRole;
+          setApps([
+            {
+              id: "app-1",
+              role: `Senior ${role}`,
+              company: "Vercel",
+              platform: "Greenhouse",
+              salary: `$${parsed.minSalary || "140000"} - $${Number(parsed.minSalary || 140000) + 30000}`,
+              status: "applied",
+              statusBadge: "✓ I applied",
+              statusBadgeColor: "bg-emerald-100 text-emerald-950 border-emerald-400 font-bold",
+              url: "https://boards.greenhouse.io",
+              appliedDate: "Today at 2:15 PM",
+            },
+            {
+              id: "app-2",
+              role: role,
+              company: "Linear",
+              platform: "Ashby",
+              salary: `$${parsed.minSalary || "135000"} - $${Number(parsed.minSalary || 135000) + 25000}`,
+              status: "i_got_stuck",
+              statusBadge: "⚠ I got stuck",
+              statusBadgeColor: "bg-[#E2F952] text-black border-black font-extrabold animate-pulse",
+              url: "https://jobs.ashbyhq.com",
+              appliedDate: "Today at 1:40 PM",
+              stuckQuestion: `Linear asks: 'What is your minimum expected base salary (USD)?' — I don't guess numbers.`,
+              stuckOptions: [`$${parsed.minSalary}`, `$${Number(parsed.minSalary) + 15000}`, `$${Number(parsed.minSalary) + 30000}`],
+            },
+            {
+              id: "app-3",
+              role: `Staff ${role}`,
+              company: "Supabase",
+              platform: "Lever",
+              salary: `$${Number(parsed.minSalary || 140000) + 20000} - $${Number(parsed.minSalary || 140000) + 50000}`,
+              status: "you_got_an_interview",
+              statusBadge: "👀 YOU GOT AN INTERVIEW",
+              statusBadgeColor: "bg-purple-200 text-purple-950 border-purple-500 font-extrabold",
+              url: "https://jobs.lever.co",
+              appliedDate: "Yesterday",
+            },
+            {
+              id: "app-4",
+              role: role,
+              company: "Ramp",
+              platform: "Greenhouse",
+              salary: `$${parsed.minSalary || "140000"} - $${Number(parsed.minSalary || 140000) + 35000}`,
+              status: "i_couldnt_submit",
+              statusBadge: "✗ I couldn't submit",
+              statusBadgeColor: "bg-rose-100 text-rose-900 border-rose-300 font-bold",
+              url: "https://boards.greenhouse.io",
+              appliedDate: "2 days ago",
+            },
+            {
+              id: "app-5",
+              role: `Lead ${role}`,
+              company: "Stripe",
+              platform: "Greenhouse",
+              salary: `$${Number(parsed.minSalary || 140000) + 15000} - $${Number(parsed.minSalary || 140000) + 45000}`,
+              status: "they_rejected_you",
+              statusBadge: "✗ They rejected you",
+              statusBadgeColor: "bg-stone-200 text-stone-700 border-stone-400 font-medium",
+              url: "https://boards.greenhouse.io",
+              appliedDate: "3 days ago",
+            },
+          ]);
+        }
+      }
+    } catch (e) {
+      console.error("Failed to load candidate profile from localStorage", e);
+    }
+  }, []);
 
   const handleResolveStuck = (appId: string, answer: string) => {
     setApps((prev) =>
@@ -166,6 +255,49 @@ export default function DashboardPage() {
           When you get an interview, I tell you.
         </p>
       </div>
+
+      {/* Candidate Profile Status Card */}
+      {candidate ? (
+        <div className="border-2 border-black bg-[#E2F952] p-5 brutal-shadow space-y-3 text-black">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-black pb-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="bg-black text-[#E2F952] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                ACTIVE TRUTH PROFILE
+              </span>
+              <span className="font-black text-sm uppercase">{candidate.name || "Candidate"}</span>
+              <span className="text-xs text-stone-900 font-bold">({candidate.email})</span>
+            </div>
+            <div className="text-xs font-bold text-black">
+              Target: <strong className="underline uppercase">{candidate.desiredRole}</strong> &bull; Min: ${candidate.minSalary} USD
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs pt-1 font-bold">
+            <span className="text-stone-900">
+              Applications routed to Mander review pipeline: <a href="mailto:sales@mander.tech" className="underline font-black text-black">sales@mander.tech</a>
+            </span>
+            <div className="flex items-center gap-3">
+              <Link href="/resume" className="underline text-black hover:text-stone-700">
+                Update Resume / Preferences &rarr;
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="border-2 border-black bg-stone-100 p-5 brutal-shadow flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="font-black text-sm uppercase text-black">No Active Resume Loaded Yet</div>
+            <p className="text-xs text-stone-600 mt-1">
+              Upload your resume to extract verified facts and start your 30 complimentary applications.
+            </p>
+          </div>
+          <Link
+            href="/resume"
+            className="bg-[#E2F952] text-black px-4 py-2 border-2 border-black font-black uppercase text-xs hover:bg-black hover:text-[#E2F952] transition-colors whitespace-nowrap brutal-shadow-sm"
+          >
+            Upload Resume Now &rarr;
+          </Link>
+        </div>
+      )}
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
