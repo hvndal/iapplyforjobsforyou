@@ -73,16 +73,6 @@ ${message}
         text: textContent,
         html: htmlContent,
       });
-
-      console.log(`[Email Dispatch] Successfully sent email to ${RECIPIENT_EMAIL}`);
-    } else {
-      // 2. Fallback / Dev logger: record dispatch payload ready for sales@mander.tech
-      console.log(`\n==================================================`);
-      console.log(`[DISPATCH TO: ${RECIPIENT_EMAIL}]`);
-      console.log(`Subject: ${emailSubject}`);
-      console.log(`Reply-To: ${email}`);
-      console.log(`Content:\n${textContent}`);
-      console.log(`==================================================\n`);
     }
 
     return NextResponse.json({
